@@ -32,6 +32,7 @@ io.on('connection', function (socket) {
       //客户端要通过on('message')来响应
       // socket.send('你好客户端, ' + data);
       setTimeout(function(){
+        console.log('服务端发送消息=====>');
         socket.emit('relogin', {
           msg: `你好,我来自服务端`,
           code: 200
