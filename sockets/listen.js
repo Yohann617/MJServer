@@ -26,10 +26,12 @@ var listen = {
   'createRole':function(socket){
     socket.on('createRole', (data)=>{
       console.log('createRole : ', data);
+
       let _newRole = data.data;
       _newRole["uuid"] = Storage["maxUuid"]+1;
       Storage["maxUuid"] += 1;
       Storage["players"].push(_newRole);
+      socket.emit('createdRole', {"status":1,uuid:_newRole["uuid"]});
 
       console.log('createRole : ', Storage["players"]);
     })
