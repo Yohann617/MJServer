@@ -3,9 +3,10 @@ var Storage = {
   'maxUuid':1,
   'players':[
     {
-      'uuid':1,
       'name':'',
-      'job':''
+      'sex':0,
+      'job':0,
+      'uuid':1
     }
   ]
 }

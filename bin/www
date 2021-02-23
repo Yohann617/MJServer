@@ -8,7 +8,11 @@ var app = require('../app');
 var debug = require('debug')('express-socket:server');
 var http = require('http');
 var socketListen = require('../sockets/listen');
-var socketEmit = require('../sockets/emit');
+// var socketEmit = require('../sockets/emit');
+//下发
+// setTimeout(function(){
+//   socket.emit('relogin', socketEmit.relogin);  
+// },100);  
 
 /**
  * Get port from environment and store in Express.
@@ -28,13 +32,11 @@ var io = require('socket.io').listen(server);
 io.on('connection', function (socket) {
   console.log('socket connection');
   //监听
-  socket.on('message', socketListen.message);
-  socket.on('playerInfo', socketListen.playerInfo);
+  socketListen.message(socket);
+  socketListen.playerInfo(socket);
+  socketListen.createRole(socket);
+  // socket.on('playerInfo', socketListen.playerInfo);
 
-  //下发
-  setTimeout(function(){
-    socket.emit('relogin', socketEmit.relogin);  
-  },100);  
   //发生错误时触发
   socket.on('error', function (err) {
       console.log(err);
