@@ -7,6 +7,8 @@
 var app = require('../app');
 var debug = require('debug')('express-socket:server');
 var http = require('http');
+var socketListen = require('../sockets/listen');
+var socketEmit = require('../sockets/emit');
 
 /**
  * Get port from environment and store in Express.
@@ -25,20 +27,14 @@ var io = require('socket.io').listen(server);
 //有新的客户端连接时触发
 io.on('connection', function (socket) {
   console.log('socket connection');
-  //接收到消息时触发
-  socket.on('message', function (data) {
-      console.log('服务端收到 : ', data);
-      //注意send()方法其实是发送一个 'message' 事件
-      //客户端要通过on('message')来响应
-      // socket.send('你好客户端, ' + data);
-      setTimeout(function(){
-        console.log('服务端发送消息=====>');
-        socket.emit('relogin', {
-          msg: `你好,我来自服务端`,
-          code: 200
-        });  
-      },2000)
-  });
+  //监听
+  socket.on('message', socketListen.message);
+  socket.on('playerInfo', socketListen.playerInfo);
+
+  //下发
+  setTimeout(function(){
+    socket.emit('relogin', socketEmit.relogin);  
+  },100);  
   //发生错误时触发
   socket.on('error', function (err) {
       console.log(err);
